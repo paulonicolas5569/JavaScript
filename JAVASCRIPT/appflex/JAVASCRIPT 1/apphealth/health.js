@@ -1,55 +1,83 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+/**
+ * App Health
+ * @author Paulo Nicolas 
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>APP - Health</title>
-</head>
+//IMC ( indice de massa corporal)
+//FCM ( frequencia cardiaca maxima )
+//TMB ( taixa metabolica basal)
+let peso, altura, idade, imc, fcm,tmb
 
-<body>
-    <div id="main">
-        <h1>APP - Health</h1>
-        <form name="frmIMC">
-            <input type="number" name="txtIdade" placeholder="Idade" class="caixa">
-            <input type="number" name="txtPeso" placeholder="Peso" class="caixa">
-            <input type="number" name="txtAltura" placeholder="Altura" class="caixa">
-            <p>
-                sexo:
-                <input type="radio" name="grupo" id="m">masulino
-                <input type="radio" name="grupo" id="f">Femenino
+function calcular(){
+    idade = frmIMC.txtIdade.value
+    peso = frmIMC.txtPeso.value
+    altura = frmIMC.txtAltura.value
 
-            </p>
-            <p>
-                <select name="nivel" id="atividade">
-                    <option value="">Selecione o nivel de atividade fisica </option>
-                    <option value="1.2">Sedentario (trabalho de scritorio)</option>
-                    <option value="1.375">Exercicio Leve (1 a 2 dia por semana )</option>
-                    <option value="1.55">Exercicio Moderado (3 a 4 dias por semana)</option>
-                    <option value="1.725">Exercicio pesado (6 a 7 dias por semana)</option>
-                    <option value="1.9">Ativo (7 dias ou mais por semana)</option>
-                </select>
-            </p>
-            <P>
-                <input type="button" value="Calcular" onclick="calcular()">
-            <input type="reset" value="Limpar" onclick="limpar()">
-            </P>
-        </form>
-        <img src="icons/reset.png" alt="marcador IMC" id="grafico">
-        <h3 id="imc"></h3>
-        <h4 id="status"></h4>
+    //validação do formilario
+    if (frmIMC.txtIdade.value === "") {
+        alert("Informe a sua idade")
+        frmIMC.txtIdade.focus()
+    }else if (frmIMC.txtPeso.value === "") {
+        alert("Informe o seu peso")
+        frmIMC.txtPeso.focus()
+    }else if (frmIMC.txtAltura.value === "") {
+        alert("Informe a sua Autura")
+        frmIMC.txtAltura.focus()
+    } else if (document.getElementById("m").checked === false && document.getElementById("f").checked === false) {
+        alert("Selecione o seu Sexo")
 
-        <img src="icons/heart.png" alt="coração" id="grafico">
-        <h3 id="freq"> </h3>
-        <h3>Calorias por dia: </h3> 
-        <hr>
-        <h4 id="calorias"></h4>
-        
-    </div>
-    <script src="health.js"></script>
+    }else if (frmIMC.nivel.value === "") {
+        alert("Selecione o nvel de atividade")
+        frmIMC.nivel.focus
 
-</body>
 
-</html>
+    }else{
+         //IMC
+    imc = peso / (altura * altura)
+    document.getElementById("imc").innerHTML= (`IMC: ${imc.toFixed(2)}`)
+    if(imc < 18.5){
+        document.getElementById("status").innerHTML="Abaixo do peso"
+        document.getElementById("grafico").src="icons/baixo.png"
+    }else if (imc < 25 ){
+        document.getElementById("status").innerHTML="Peso normal"
+        document.getElementById("grafico").src="icons/normal.png"
+    }else if (imc < 30 ){
+        document.getElementById("status").innerHTML="Sobrepeso"
+        document.getElementById("grafico").src="icons/sobrepeso.png"
+    }else if (imc < 35 ){
+        document.getElementById("status").innerHTML="Obesidade Grau 1"
+        document.getElementById("grafico").src="icons/obesidade1.png"
+    }else if (imc < 40 ){
+        document.getElementById("status").innerHTML="Obesidade Grau 2"
+        document.getElementById("grafico").src="icons/obesidade2.png"
+    }else {
+        document.getElementById("status").innerHTML="Obesidade Severa"
+        document.getElementById("grafico").src="icons/obesidadeExtrema.png"
+    }
+    //FCM - formula de tanaka
+    fcm = 208 - (0.7 * idade)
+    document.getElementById("freq").innerHTML=(fcm)
+    //TMB - formula de Harris Benedict
+    //variaveis locais para capturar o conteudo (vetor)
+    let select = document.getElementById("atividade")
+    let opcaoValor = Number(select.options[select.selectedIndex].value)
+
+    if (document.getElementById("m").checked === true) {
+        tmb = (66 + (13.7 * peso) + (5 * (altura * 100) - (6.8 *idade))) * opcaoValor
+    }
+    if(document.getElementById("f").checked === true) {
+        tmb = (655 + (9.6 * peso ) + (1.8 * (altura*100 ) - (4.7 * idade ))) * opcaoValor
+    }
+    document.getElementById("calorias").innerHTML= tmb.toFixed(2)
+  
+    }
+   
+}
+
+function limpar(){
+    document.getElementById("imc").innerHTML=""
+    document.getElementById("status").innerHTML=""
+    document.getElementById("freq").innerHTML=""
+    document.getElementById("grafico").scr="icons/reset.png"
+    document.getElementById("calorias").innerHTML=""
+}
