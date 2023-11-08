@@ -120,7 +120,6 @@ input[type=reset] {
     animation: pulsar 0.7s infinite alternate;
     z-index: -1;
     top: 50px;
-
 }
 
 .Quadrado{
@@ -147,6 +146,11 @@ input[type=reset] {
 
 .Left{
     left: 50%;
+}
+#freq{
+    position: absolute;
+    padding-left: 55px;
+    color: #fff;
 }
 
 /* Animação com CSS */
