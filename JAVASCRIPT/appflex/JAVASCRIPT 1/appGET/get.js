@@ -76,7 +76,7 @@ function calcular() {
 function limpar() {
     document.getElementById("imc").innerHTML = ""
     document.getElementById("status").innerHTML = ""
-    document.getElementById("freq").innerHTML = ""
+    document.getElementById("freq").innerHTML = "FCM"
     document.getElementById("grafico").src = "icons/reset.png"
     document.getElementById("calorias").innerHTML = ""
 }
